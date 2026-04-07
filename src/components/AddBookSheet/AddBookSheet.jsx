@@ -4,13 +4,54 @@ import { useBookSearch } from '../../hooks/useBookSearch';
 import SearchResult from '../SearchResult/SearchResult';
 import styles from './AddBookSheet.module.css';
 
-const GENRES = ['Fiction', 'Non-Fiction', 'Fantasy', 'Romance', 'Sci-Fi', 'Mystery', 'Biography', 'Historical', 'Thriller', 'Other'];
+const GENRES = ['Fiction', 'Non-Fiction', 'Other'];
 
 function deriveGenre(subjects = []) {
-  const match = GENRES.find((genre) =>
-    subjects.some((subject) => subject.toLowerCase().includes(genre.toLowerCase().replace('-', ' ')))
-  );
-  return match || 'Other';
+  const text = subjects.join(' ').toLowerCase();
+
+  const nonFictionHints = [
+    'biography',
+    'memoir',
+    'history',
+    'essay',
+    'essays',
+    'journalism',
+    'politics',
+    'science',
+    'psychology',
+    'self-help',
+    'self help',
+    'business',
+    'philosophy',
+    'travel',
+    'autobiography',
+    'nonfiction',
+    'non-fiction'
+  ];
+
+  const fictionHints = [
+    'fiction',
+    'novel',
+    'fantasy',
+    'romance',
+    'mystery',
+    'thriller',
+    'science fiction',
+    'sci-fi',
+    'historical fiction',
+    'horror',
+    'young adult'
+  ];
+
+  if (nonFictionHints.some((hint) => text.includes(hint))) {
+    return 'Non-Fiction';
+  }
+
+  if (fictionHints.some((hint) => text.includes(hint))) {
+    return 'Fiction';
+  }
+
+  return 'Other';
 }
 
 function initialForm() {

@@ -52,7 +52,7 @@ You can edit those later from the Profile tab.
 
 ## Notes
 
-- Open Library powers search and cover images.
+- Open Library powers search and cover images, with Google Books used as a fallback cover source when Open Library does not have one.
 - Search is debounced by 400ms and gracefully falls back to manual entry if unavailable.
 - The app uses a generated service worker through `vite-plugin-pwa` so it remains usable offline after the first successful load.
 - All app data is stored under device-local keys such as `bookshelf_books` and `bookshelf_profile`.
