@@ -1,0 +1,50 @@
+.card {
+  background: var(--color-surface);
+  border: 1px solid rgba(45, 74, 62, 0.08);
+  border-radius: 16px;
+  box-shadow: var(--shadow-card);
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+  animation: fadeUp 320ms ease both;
+}
+
+.main {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 14px;
+  border: none;
+  background: none;
+  padding: 0;
+  text-align: left;
+}
+
+.body {
+  display: grid;
+  gap: 8px;
+}
+
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+}
+
+.status,
+.meta,
+.author {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.title {
+  margin: 0;
+  font-size: 20px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}

@@ -1,0 +1,82 @@
+.outer {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(201, 150, 58, 0.12), transparent 30%),
+    linear-gradient(180deg, #f7f1e8 0%, #efe6d8 100%);
+  display: flex;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+.deviceFrame {
+  width: min(100%, 430px);
+  min-height: calc(100vh - 48px);
+  background: var(--color-bg);
+  border: 1px solid rgba(45, 74, 62, 0.08);
+  border-radius: 32px;
+  box-shadow: 0 24px 60px rgba(50, 38, 23, 0.12);
+  position: relative;
+  overflow: hidden;
+}
+
+.header {
+  padding: calc(24px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-left)) 16px calc(16px + env(safe-area-inset-right));
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.kicker {
+  margin: 0 0 4px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.title {
+  margin: 0;
+  font-size: 32px;
+}
+
+.headerActions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.primaryButton,
+.secondaryButton {
+  min-height: 44px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  padding: 0 14px;
+  font-size: 14px;
+}
+
+.primaryButton {
+  background: var(--color-primary);
+  color: white;
+}
+
+.secondaryButton {
+  background: rgba(255, 252, 247, 0.75);
+  color: var(--color-primary);
+  border-color: var(--color-border);
+}
+
+.content {
+  padding: 0 calc(16px + env(safe-area-inset-right)) calc(92px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left));
+}
+
+@media (max-width: 540px) {
+  .outer {
+    padding: 0;
+  }
+
+  .deviceFrame {
+    width: 100%;
+    min-height: 100vh;
+    border-radius: 0;
+  }
+}

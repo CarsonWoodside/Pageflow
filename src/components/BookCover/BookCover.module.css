@@ -1,0 +1,41 @@
+.frame {
+  width: 80px;
+  height: 110px;
+  border-radius: 16px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: inset 0 0 0 1px rgba(45, 74, 62, 0.08);
+}
+
+.large {
+  width: 124px;
+  height: 172px;
+}
+
+.compact {
+  width: 48px;
+  height: 68px;
+  border-radius: 10px;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.placeholder {
+  display: grid;
+  place-items: center;
+  color: rgba(26, 26, 26, 0.8);
+}
+
+.placeholder span {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+}
+
+.compact span {
+  font-size: 22px;
+}

@@ -1,0 +1,80 @@
+:root {
+  --color-bg: #f5f0e8;
+  --color-surface: #fffcf7;
+  --color-primary: #2d4a3e;
+  --color-primary-light: #3d6b5a;
+  --color-accent: #c4622d;
+  --color-gold: #c9963a;
+  --color-text: #1a1a1a;
+  --color-text-muted: #6b6355;
+  --color-border: #e8e0d0;
+  --color-progress-bg: #e8e0d0;
+  --shadow-card: 0 12px 30px rgba(60, 45, 24, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Source Serif 4', serif;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  transition: transform 100ms ease, opacity 150ms ease;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Playfair Display', serif;
+  letter-spacing: -0.02em;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.page-enter {
+  animation: fadeUp 280ms ease both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

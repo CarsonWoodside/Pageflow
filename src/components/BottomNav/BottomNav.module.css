@@ -1,0 +1,29 @@
+.nav {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  width: min(100%, 430px);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 12px calc(16px + env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left));
+  background: rgba(255, 252, 247, 0.75);
+  backdrop-filter: blur(18px);
+  border-top: 1px solid rgba(45, 74, 62, 0.08);
+  z-index: 20;
+}
+
+.link {
+  min-height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.active {
+  background: var(--color-primary);
+  color: white;
+}

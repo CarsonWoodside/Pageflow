@@ -1,0 +1,21 @@
+.item {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 12px;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  background: transparent;
+  text-align: left;
+}
+
+.content {
+  display: grid;
+  gap: 2px;
+}
+
+.content span {
+  color: var(--color-text-muted);
+  font-size: 14px;
+}

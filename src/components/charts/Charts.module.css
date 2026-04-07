@@ -1,0 +1,100 @@
+.svg {
+  width: 100%;
+  overflow: visible;
+}
+
+.axisLabel {
+  font-size: 10px;
+  fill: var(--color-text-muted);
+}
+
+.bar {
+  transform-origin: center bottom;
+  animation: growBar 360ms ease both;
+}
+
+.line {
+  stroke-dasharray: 500;
+  stroke-dashoffset: 500;
+  animation: drawLine 800ms ease forwards;
+}
+
+.horizontalChart {
+  display: grid;
+  gap: 10px;
+}
+
+.horizontalRow {
+  display: grid;
+  grid-template-columns: 32px 1fr 32px;
+  gap: 10px;
+  align-items: center;
+  font-size: 12px;
+}
+
+.horizontalTrack {
+  height: 12px;
+  border-radius: 999px;
+  background: var(--color-progress-bg);
+  overflow: hidden;
+}
+
+.horizontalFill {
+  height: 100%;
+  border-radius: 999px;
+  transform-origin: left center;
+  animation: growX 360ms ease both;
+}
+
+.donutWrap {
+  display: grid;
+  gap: 12px;
+}
+
+.donut {
+  width: 100%;
+  max-width: 220px;
+  margin: 0 auto;
+}
+
+.legend {
+  display: grid;
+  gap: 8px;
+}
+
+.legendItem {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 14px;
+}
+
+.legendSwatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+}
+
+@keyframes growBar {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes drawLine {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes growX {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
