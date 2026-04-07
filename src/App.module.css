@@ -2,6 +2,7 @@
   min-height: 100vh;
   background:
     radial-gradient(circle at top left, rgba(201, 150, 58, 0.12), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(45, 74, 62, 0.12), transparent 28%),
     linear-gradient(180deg, #f7f1e8 0%, #efe6d8 100%);
   display: flex;
   justify-content: center;
@@ -17,6 +18,32 @@
   box-shadow: 0 24px 60px rgba(50, 38, 23, 0.12);
   position: relative;
   overflow: hidden;
+  isolation: isolate;
+}
+
+.deviceFrame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.24), transparent 34%),
+    radial-gradient(circle at 85% 10%, rgba(201, 150, 58, 0.12), transparent 18%);
+  pointer-events: none;
+}
+
+.celebration {
+  position: absolute;
+  top: calc(12px + env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  z-index: 25;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(201, 150, 58, 0.95), rgba(196, 98, 45, 0.94));
+  color: white;
+  box-shadow: 0 16px 28px rgba(196, 98, 45, 0.18);
+  animation: celebrateIn 280ms ease both;
 }
 
 .header {
@@ -36,6 +63,7 @@
 .title {
   margin: 0;
   font-size: 32px;
+  text-shadow: 0 8px 24px rgba(45, 74, 62, 0.08);
 }
 
 .headerActions {
@@ -55,7 +83,7 @@
 }
 
 .primaryButton {
-  background: var(--color-primary);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
   color: white;
 }
 
@@ -78,5 +106,16 @@
     width: 100%;
     min-height: 100vh;
     border-radius: 0;
+  }
+}
+
+@keyframes celebrateIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
   }
 }

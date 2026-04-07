@@ -6,7 +6,13 @@
   padding: 12px;
   display: grid;
   gap: 10px;
-  animation: fadeUp 320ms ease both;
+  animation: floatIn 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px rgba(60, 45, 24, 0.12);
 }
 
 .main {
@@ -33,10 +39,20 @@
 
 .status,
 .meta,
-.author {
+.author,
+.progressDetail,
+.lastLogged {
   margin: 0;
   color: var(--color-text-muted);
   font-size: 14px;
+}
+
+.progressDetail {
+  color: var(--color-primary);
+}
+
+.lastLogged {
+  font-size: 13px;
 }
 
 .title {
@@ -44,7 +60,12 @@
   font-size: 20px;
 }
 
-.actions {
-  display: flex;
-  justify-content: flex-end;
+.quickLog {
+  min-height: 40px;
+  justify-self: end;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(45, 74, 62, 0.12);
+  background: rgba(45, 74, 62, 0.08);
+  color: var(--color-primary);
 }

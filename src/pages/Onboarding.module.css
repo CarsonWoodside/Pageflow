@@ -1,0 +1,122 @@
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(201, 150, 58, 0.28), transparent 25%),
+    radial-gradient(circle at 80% 20%, rgba(196, 98, 45, 0.18), transparent 28%),
+    linear-gradient(180deg, #f7f1e8 0%, #ebe1cf 100%);
+}
+
+.orb {
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(45, 74, 62, 0.18), transparent 65%);
+  top: -40px;
+  right: -60px;
+  animation: float 7s ease-in-out infinite;
+}
+
+.card {
+  position: relative;
+  width: min(100%, 440px);
+  padding: 28px;
+  border-radius: 28px;
+  background: rgba(255, 252, 247, 0.86);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(45, 74, 62, 0.08);
+  box-shadow: 0 24px 60px rgba(60, 45, 24, 0.12);
+  animation: fadeUp 420ms ease both;
+}
+
+.eyebrow,
+.copy,
+.labelText {
+  color: var(--color-text-muted);
+}
+
+.card h1 {
+  margin: 0 0 8px;
+  font-size: 36px;
+}
+
+.label {
+  display: grid;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.label input {
+  min-height: 48px;
+  border-radius: 16px;
+  border: 1px solid var(--color-border);
+  padding: 0 14px;
+  background: white;
+}
+
+.group {
+  margin-top: 18px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.chip,
+.chipActive {
+  min-height: 42px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: rgba(255, 252, 247, 0.7);
+}
+
+.chipActive {
+  background: var(--color-primary);
+  color: white;
+}
+
+.customGoal {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: rgba(255, 252, 247, 0.7);
+  color: var(--color-text-muted);
+}
+
+.customGoal input {
+  width: 72px;
+  min-height: 32px;
+  border: none;
+  border-radius: 999px;
+  background: white;
+  padding: 0 10px;
+  text-align: center;
+}
+
+.primary {
+  width: 100%;
+  min-height: 52px;
+  margin-top: 24px;
+  border: none;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: white;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(18px); }
+}

@@ -3,6 +3,43 @@
   gap: 16px;
 }
 
+.goalCard {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(45, 74, 62, 0.95), rgba(61, 107, 90, 0.92));
+  color: white;
+  border-radius: 24px;
+  padding: 18px;
+}
+
+.goalLabel,
+.goalCopy,
+.heatLabel {
+  margin: 0;
+}
+
+.goalCard .goalLabel,
+.goalCard .goalCopy {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.goalCard h2 {
+  margin: 6px 0;
+}
+
+.goalRing {
+  width: 84px;
+  height: 84px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  flex-shrink: 0;
+}
+
 .summaryGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -39,4 +76,22 @@
 
 .funStats p {
   margin: 0;
+}
+
+.heatmap {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.heatCell {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  background: var(--color-primary);
+}
+
+.heatLabel {
+  margin-top: 12px;
+  color: var(--color-text-muted);
+  font-size: 14px;
 }

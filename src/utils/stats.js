@@ -9,9 +9,49 @@ function daysBetween(start, end) {
   return Math.max(1, Math.round((end - start) / ms) + 1);
 }
 
+export function getFinishedSessions(books) {
+  return books.flatMap((book) => {
+    const pastReads = (book.pastReads || []).map((session) => ({
+      ...session,
+      title: book.title,
+      author: book.author,
+      genre: book.genre
+    }));
+    const currentRead =
+      book.status === 'finished'
+        ? [
+            {
+              title: book.title,
+              author: book.author,
+              genre: book.genre,
+              totalPages: book.totalPages,
+              dateStarted: book.dateStarted,
+              dateFinished: book.dateFinished,
+              rating: book.rating,
+              review: book.review,
+              log: book.log || []
+            }
+          ]
+        : [];
+
+    return [...pastReads, ...currentRead];
+  });
+}
+
+export function getAllLogs(books) {
+  return books.flatMap((book) => {
+    const archived = (book.pastReads || []).flatMap((session) => session.log || []);
+    return [...archived, ...(book.log || [])];
+  });
+}
+
+export function getTotalFinishedReads(books) {
+  return getFinishedSessions(books).length;
+}
+
 export function getSummaryStats(books) {
-  const finished = books.filter((book) => book.status === 'finished');
-  const readingLogs = books.flatMap((book) => book.log || []);
+  const finished = getFinishedSessions(books);
+  const readingLogs = getAllLogs(books);
   const totalPagesRead = readingLogs.reduce((sum, entry) => sum + (entry.pagesRead || 0), 0);
   const ratings = finished.filter((book) => book.rating);
   const averageRating = ratings.length
@@ -58,13 +98,11 @@ export function getPagesPerMonth(books, year = new Date().getFullYear()) {
     value: 0
   }));
 
-  books.forEach((book) => {
-    (book.log || []).forEach((entry) => {
-      const date = parseDate(entry.date);
-      if (date && date.getFullYear() === year) {
-        totals[date.getMonth()].value += entry.pagesRead || 0;
-      }
-    });
+  getAllLogs(books).forEach((entry) => {
+    const date = parseDate(entry.date);
+    if (date && date.getFullYear() === year) {
+      totals[date.getMonth()].value += entry.pagesRead || 0;
+    }
   });
 
   return totals;
@@ -76,32 +114,28 @@ export function getFinishedPerMonth(books, year = new Date().getFullYear()) {
     value: 0
   }));
 
-  books
-    .filter((book) => book.status === 'finished' && book.dateFinished)
-    .forEach((book) => {
-      const date = parseDate(book.dateFinished);
-      if (date && date.getFullYear() === year) {
-        totals[date.getMonth()].value += 1;
-      }
-    });
+  getFinishedSessions(books).forEach((book) => {
+    const date = parseDate(book.dateFinished);
+    if (date && date.getFullYear() === year) {
+      totals[date.getMonth()].value += 1;
+    }
+  });
 
   return totals;
 }
 
 export function getGenreBreakdown(books) {
-  const counts = books
-    .filter((book) => book.status === 'finished')
-    .reduce((acc, book) => {
-      acc[book.genre] = (acc[book.genre] || 0) + 1;
-      return acc;
-    }, {});
+  const counts = getFinishedSessions(books).reduce((acc, book) => {
+    acc[book.genre] = (acc[book.genre] || 0) + 1;
+    return acc;
+  }, {});
 
   return Object.entries(counts).map(([label, value]) => ({ label, value }));
 }
 
 export function getPaceSeries(books) {
-  const entries = books
-    .flatMap((book) => (book.log || []).map((entry) => ({ ...entry })))
+  const entries = getAllLogs(books)
+    .map((entry) => ({ ...entry }))
     .sort((a, b) => new Date(a.date) - new Date(b.date));
 
   let cumulative = 0;
@@ -115,8 +149,8 @@ export function getPaceSeries(books) {
 }
 
 export function getFunStats(books) {
-  const finished = books.filter((book) => book.status === 'finished');
-  const logs = books.flatMap((book) => book.log || []);
+  const finished = getFinishedSessions(books);
+  const logs = getAllLogs(books);
   const finishedByMonth = getFinishedPerMonth(books);
   const now = new Date();
   const currentYear = now.getFullYear();
@@ -146,4 +180,25 @@ export function getFunStats(books) {
     averagePagesPerReadingDay: Math.round(pagesRead / readingDays),
     yearComparison: { thisYear, previousYear }
   };
+}
+
+export function getHeatmapData(books, days = 35) {
+  const logsByDay = getAllLogs(books).reduce((acc, entry) => {
+    const key = entry.date?.slice(0, 10);
+    if (!key) return acc;
+    acc[key] = (acc[key] || 0) + (entry.pagesRead || 0);
+    return acc;
+  }, {});
+
+  return Array.from({ length: days }, (_, index) => {
+    const date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() - (days - index - 1));
+    const key = date.toISOString().slice(0, 10);
+    return {
+      key,
+      label: date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }),
+      value: logsByDay[key] || 0
+    };
+  });
 }

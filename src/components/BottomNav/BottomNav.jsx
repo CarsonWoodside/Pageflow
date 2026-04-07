@@ -2,10 +2,9 @@ import { NavLink } from 'react-router-dom';
 import styles from './BottomNav.module.css';
 
 const items = [
-  { to: '/shelf', label: 'Shelf' },
-  { to: '/stats', label: 'Stats' },
-  { to: '/friends', label: 'Friends' },
-  { to: '/profile', label: 'Profile' }
+  { to: '/shelf', label: '📚 Shelf' },
+  { to: '/stats', label: '📈 Stats' },
+  { to: '/profile', label: '✨ You' }
 ];
 
 export default function BottomNav() {

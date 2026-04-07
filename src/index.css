@@ -12,6 +12,45 @@
   --shadow-card: 0 12px 30px rgba(60, 45, 24, 0.08);
 }
 
+[data-theme='lamp'] {
+  --color-bg: #f7efe1;
+  --color-surface: #fff9f0;
+  --color-primary: #5b4124;
+  --color-primary-light: #8b6437;
+  --color-accent: #c06a2b;
+  --color-gold: #d3a13c;
+  --color-text: #20170f;
+  --color-text-muted: #7b6651;
+  --color-border: #eadcc8;
+  --color-progress-bg: #eadcc8;
+}
+
+[data-theme='rain'] {
+  --color-bg: #edf1f1;
+  --color-surface: #fbfcfc;
+  --color-primary: #35505a;
+  --color-primary-light: #537886;
+  --color-accent: #8b6a55;
+  --color-gold: #b69857;
+  --color-text: #1c2326;
+  --color-text-muted: #66757c;
+  --color-border: #d8e0e3;
+  --color-progress-bg: #d8e0e3;
+}
+
+[data-theme='morning'] {
+  --color-bg: #f8f2ea;
+  --color-surface: #fffdf9;
+  --color-primary: #6a4a3b;
+  --color-primary-light: #9b6d57;
+  --color-accent: #d48b52;
+  --color-gold: #d2a85b;
+  --color-text: #241b16;
+  --color-text-muted: #7a6a61;
+  --color-border: #ebe0d6;
+  --color-progress-bg: #ebe0d6;
+}
+
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
@@ -28,6 +67,9 @@ body {
   font-family: 'Source Serif 4', serif;
   color: var(--color-text);
   background: var(--color-bg);
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(45, 74, 62, 0.06) 1px, transparent 0);
+  background-size: 24px 24px;
 }
 
 button,
@@ -68,6 +110,10 @@ a {
   animation: fadeUp 280ms ease both;
 }
 
+.float-in {
+  animation: floatIn 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 @keyframes fadeUp {
   from {
     opacity: 0;
@@ -76,5 +122,16 @@ a {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }

@@ -1,26 +1,6 @@
-export const USERS = [
-  { id: 'carson', name: 'Carson' },
-  { id: 'jessica', name: 'Jessica' },
-  { id: 'ash', name: 'Ash' }
-];
-
-const ACTIVE_USER_KEY = 'bookshelf_active_user';
-
-export function getActiveUserId() {
-  return window.localStorage.getItem(ACTIVE_USER_KEY);
-}
-
-export function setActiveUserId(userId) {
-  window.localStorage.setItem(ACTIVE_USER_KEY, userId);
-}
-
-export function getBooksKey(userId) {
-  return `bookshelf_${userId}_books`;
-}
-
-export function getSharedKey(userId) {
-  return `bookshelf_${userId}_shared_snippets`;
-}
+export const BOOKS_KEY = 'bookshelf_books';
+export const PROFILE_KEY = 'bookshelf_profile';
+export const ONBOARDING_KEY = 'bookshelf_onboarding_complete';
 
 export function readJson(key, fallback) {
   try {
@@ -33,4 +13,12 @@ export function readJson(key, fallback) {
 
 export function writeJson(key, value) {
   window.localStorage.setItem(key, JSON.stringify(value));
+}
+
+export function readString(key, fallback = '') {
+  return window.localStorage.getItem(key) || fallback;
+}
+
+export function writeString(key, value) {
+  window.localStorage.setItem(key, value);
 }

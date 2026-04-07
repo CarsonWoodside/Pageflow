@@ -3,24 +3,44 @@ import DonutChart from '../components/charts/DonutChart';
 import LineChart from '../components/charts/LineChart';
 import {
   getFinishedPerMonth,
+  getHeatmapData,
   getFunStats,
   getGenreBreakdown,
   getPagesPerMonth,
   getPaceSeries,
-  getSummaryStats
+  getSummaryStats,
+  getTotalFinishedReads
 } from '../utils/stats';
 import styles from './Stats.module.css';
 
-export default function Stats({ books }) {
+export default function Stats({ books, profile }) {
   const summary = getSummaryStats(books);
   const pagesPerMonth = getPagesPerMonth(books);
   const finishedPerMonth = getFinishedPerMonth(books);
   const genreBreakdown = getGenreBreakdown(books);
   const paceSeries = getPaceSeries(books);
   const fun = getFunStats(books);
+  const heatmap = getHeatmapData(books);
+  const finishedReads = getTotalFinishedReads(books);
+  const goalPercent = profile.readingGoal ? Math.min(100, Math.round((finishedReads / profile.readingGoal) * 100)) : 0;
 
   return (
     <section className={`${styles.page} page-enter`}>
+      <div className={styles.goalCard}>
+        <div>
+          <p className={styles.goalLabel}>Goal progress</p>
+          <h2>
+            {finishedReads} of {profile.readingGoal} books
+          </h2>
+          <p className={styles.goalCopy}>
+            {goalPercent}% complete. {Math.max(profile.readingGoal - finishedReads, 0)} left to hit your goal.
+          </p>
+        </div>
+        <div className={styles.goalRing}>
+          <strong>{goalPercent}%</strong>
+        </div>
+      </div>
+
       <div className={styles.summaryGrid}>
         <div className={styles.card}>
           <strong>{summary.finishedCount}</strong>
@@ -38,6 +58,21 @@ export default function Stats({ books }) {
           <strong>{summary.averageRating ? summary.averageRating.toFixed(1) : '—'}</strong>
           <span>Average rating</span>
         </div>
+      </div>
+
+      <div className={styles.chartCard}>
+        <h2>Reading days</h2>
+        <div className={styles.heatmap}>
+          {heatmap.map((day) => (
+            <div
+              key={day.key}
+              className={styles.heatCell}
+              style={{ opacity: day.value ? Math.min(1, 0.2 + day.value / 40) : 0.14 }}
+              title={`${day.label}: ${day.value} pages`}
+            />
+          ))}
+        </div>
+        <p className={styles.heatLabel}>Last 35 days of reading activity.</p>
       </div>
 
       <div className={styles.chartCard}>

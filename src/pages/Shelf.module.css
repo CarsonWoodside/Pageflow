@@ -25,6 +25,33 @@
   gap: 12px;
 }
 
+.section {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.sectionHeader h2,
+.subheading {
+  margin: 0;
+}
+
+.sectionHeader span {
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.subheading {
+  font-size: 18px;
+}
+
 .empty {
   padding: 40px 20px;
   text-align: center;

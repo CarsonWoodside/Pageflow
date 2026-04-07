@@ -11,7 +11,8 @@
 }
 
 .kicker,
-.copy {
+.copy,
+.themeLabel {
   color: var(--color-text-muted);
 }
 
@@ -25,24 +26,67 @@
   gap: 10px;
 }
 
-.userButton,
+.label {
+  display: grid;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.label input,
 .reset {
+  width: 100%;
   min-height: 48px;
   border-radius: 16px;
 }
 
-.userButton {
+.label input {
   border: 1px solid var(--color-border);
-  background: transparent;
+  background: white;
+  padding: 0 12px;
 }
 
-.active {
-  background: var(--color-primary);
-  color: white;
+.statsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.statPill {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: 16px;
+  background: rgba(45, 74, 62, 0.08);
+  color: var(--color-primary);
 }
 
 .reset {
   border: none;
   background: var(--color-accent);
+  color: white;
+}
+
+.themeGroup {
+  margin-top: 14px;
+}
+
+.themeGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.themeButton {
+  min-height: 46px;
+  border-radius: 16px;
+  border: 1px solid var(--color-border);
+  background: rgba(255, 252, 247, 0.7);
+}
+
+.themeActive {
+  background: var(--color-primary);
   color: white;
 }

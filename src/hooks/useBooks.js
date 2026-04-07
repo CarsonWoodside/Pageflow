@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { colorFromString } from '../utils/colors';
-import { getBooksKey, getSharedKey, readJson, writeJson } from '../utils/storage';
+import { BOOKS_KEY, readJson, writeJson } from '../utils/storage';
 
 function today() {
   return new Date().toISOString();
@@ -10,24 +10,12 @@ function clamp(value, max) {
   return Math.max(0, Math.min(value, max || value));
 }
 
-export function useBooks(userId) {
-  const [books, setBooks] = useState([]);
-  const [sharedSnippets, setSharedSnippets] = useState([]);
-
-  useEffect(() => {
-    if (!userId) return;
-    setBooks(readJson(getBooksKey(userId), []));
-    setSharedSnippets(readJson(getSharedKey(userId), []));
-  }, [userId]);
+export function useBooks() {
+  const [books, setBooks] = useState(() => readJson(BOOKS_KEY, []));
 
   const persistBooks = (nextBooks) => {
     setBooks(nextBooks);
-    writeJson(getBooksKey(userId), nextBooks);
-  };
-
-  const persistShared = (nextShared) => {
-    setSharedSnippets(nextShared);
-    writeJson(getSharedKey(userId), nextShared);
+    writeJson(BOOKS_KEY, nextBooks);
   };
 
   const addBook = (data) => {
@@ -47,6 +35,7 @@ export function useBooks(userId) {
       dateFinished: null,
       rating: null,
       review: '',
+      pastReads: [],
       openLibraryKey: data.openLibraryKey || null,
       firstPublishYear: data.firstPublishYear || null,
       log:
@@ -171,14 +160,110 @@ export function useBooks(userId) {
     persistBooks(nextBooks);
   };
 
-  const saveSharedSnippet = (payload) => {
-    const entry = {
-      id: crypto.randomUUID(),
-      fromName: payload.fromName.trim(),
-      snippet: payload.snippet.trim(),
-      savedAt: today()
-    };
-    persistShared([entry, ...sharedSnippets]);
+  const logAndFinish = (bookId, pageValue, payload) => {
+    const nextBooks = books.map((book) => {
+      if (book.id !== bookId) return book;
+
+      const totalPages = Number(book.totalPages || 0);
+      const nextPage = clamp(Number(pageValue || 0), totalPages || Number(pageValue || 0));
+      const currentPage = Number(book.currentPage || 0);
+      const pagesRead = Math.max(0, nextPage - currentPage);
+      const updatedLog =
+        pagesRead > 0
+          ? [
+              ...(book.log || []),
+              {
+                id: crypto.randomUUID(),
+                date: payload.dateFinished || today(),
+                pagesRead,
+                cumulativePages: nextPage,
+                percentComplete: totalPages ? Math.round((nextPage / totalPages) * 100) : 0
+              }
+            ]
+          : book.log || [];
+
+      const finalCurrentPage = totalPages || nextPage;
+      const finalLog =
+        totalPages && finalCurrentPage > nextPage
+          ? [
+              ...updatedLog,
+              {
+                id: crypto.randomUUID(),
+                date: payload.dateFinished || today(),
+                pagesRead: Math.max(0, totalPages - nextPage),
+                cumulativePages: totalPages,
+                percentComplete: 100
+              }
+            ]
+          : updatedLog;
+
+      return {
+        ...book,
+        currentPage: totalPages || finalCurrentPage,
+        status: 'finished',
+        dateStarted: book.dateStarted || payload.dateFinished || today(),
+        dateFinished: payload.dateFinished || today(),
+        rating: Number(payload.rating) || null,
+        review: payload.review || '',
+        log: finalLog
+      };
+    });
+
+    persistBooks(nextBooks);
+  };
+
+  const rereadBook = (bookId) => {
+    const nextBooks = books.map((book) => {
+      if (book.id !== bookId || book.status !== 'finished') return book;
+
+      const archivedRead = {
+        totalPages: book.totalPages,
+        dateStarted: book.dateStarted,
+        dateFinished: book.dateFinished,
+        rating: book.rating,
+        review: book.review,
+        log: book.log || []
+      };
+
+      return {
+        ...book,
+        currentPage: 0,
+        status: 'reading',
+        dateStarted: today(),
+        dateFinished: null,
+        rating: null,
+        review: '',
+        log: [],
+        pastReads: [...(book.pastReads || []), archivedRead]
+      };
+    });
+
+    persistBooks(nextBooks);
+  };
+
+  const undoLastLog = (bookId) => {
+    const nextBooks = books.map((book) => {
+      if (book.id !== bookId) return book;
+
+      const nextLog = [...(book.log || [])];
+      if (!nextLog.length) return book;
+
+      nextLog.pop();
+      const previousEntry = nextLog[nextLog.length - 1] || null;
+      const nextCurrentPage = previousEntry ? previousEntry.cumulativePages : 0;
+
+      return {
+        ...book,
+        currentPage: nextCurrentPage,
+        status: book.status === 'finished' ? 'reading' : book.status,
+        dateFinished: nextLog.length ? book.dateFinished : null,
+        rating: nextLog.length ? book.rating : book.status === 'finished' ? null : book.rating,
+        review: nextLog.length ? book.review : book.status === 'finished' ? '' : book.review,
+        log: nextLog
+      };
+    });
+
+    persistBooks(nextBooks);
   };
 
   const statsBooks = useMemo(() => books, [books]);
@@ -186,12 +271,13 @@ export function useBooks(userId) {
   return {
     books,
     statsBooks,
-    sharedSnippets,
     addBook,
     updateBook,
     deleteBook,
     logProgress,
     markFinished,
-    saveSharedSnippet
+    logAndFinish,
+    undoLastLog,
+    rereadBook
   };
 }
